@@ -32,8 +32,10 @@
     .observer()
     .subscribe(self.user)
     .map(^(User *value){
+        //数据转换成合适的给view
         return value.name;
     }).then(^(UITextField * _Nonnull view, id value) {
+        //可进行复杂样式处理
         NSString *v = value;
         if ([v isEqualToString:@"22222"]) {
             view.backgroundColor = [UIColor redColor];
@@ -42,6 +44,7 @@
         }
         view.text = v;
     }).listener(^(User *u,id content) {
+        //此处可以监听控件的变化，及时映射到model上
         u.name = content;
         NSLog(@"content:%@",content);
     });
