@@ -6,7 +6,6 @@
 //
 
 #import "UIView+Observer.h"
-#import <objc/runtime.h>
 
 @implementation UIView (Observer)
 
