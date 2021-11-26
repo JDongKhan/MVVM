@@ -2,7 +2,7 @@
 //  NSObject+Observer.h
 //  MVVM
 //
-//  Created by JD on 2021/7/16.
+//  Created by JD on 2020/7/16.
 //
 
 #import <UIKit/UIKit.h>
