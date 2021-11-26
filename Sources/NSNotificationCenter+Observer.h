@@ -1,6 +1,6 @@
 //
 //  NSNotificationCenter+Observer.h
-//  Demo
+//  MVVM
 //
 //  Created by JD on 2021/11/25.
 //
