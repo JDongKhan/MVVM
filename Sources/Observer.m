@@ -25,6 +25,7 @@
         Observer *observer = [[Observer alloc] init];
         observer.view = view;
         if ([view isKindOfClass:[UITextField class]]) {
+            /// 监听文本输入变化
             [[NSNotificationCenter defaultCenter] safe_addObserver:observer selector:@selector(textChange:) name:UITextFieldTextDidChangeNotification object:nil];
         }
         return  observer;
@@ -57,7 +58,7 @@
 #pragma mark ---- 私有方法
 - (void)setValue:(Observable *)value {
     _value = value;
-    [self configData:value];
+    [self renderUI];
     __weak Observer *observer = self;
     [value addObserver:^{
         if (observer == nil) {
@@ -67,7 +68,7 @@
         if (then != nil) {
             then(observer.view,[self mapValue]);
         } else {
-            [self configData:observer.value];
+            [self renderUI];
         }
     }];
 }
@@ -76,7 +77,16 @@
     return _value;
 }
 
-- (void)configData:(Observable *)v {
+- (Observer * _Nonnull (^)(ObserverListener _Nonnull))listener {
+    return ^(ObserverListener observerListener){
+        self.observerListener = observerListener;
+        return self;
+    };
+}
+
+
+/// 渲染UI
+- (void)renderUI {
     id obj = [self mapValue];
     if ([obj isKindOfClass:[NSString class]]) {
         if ([self.view isKindOfClass:[UILabel class]]) {
@@ -89,14 +99,16 @@
     }
 }
 
-- (Observer * _Nonnull (^)(ObserverListener _Nonnull))listener {
-    return ^(ObserverListener observerListener){
-        self.observerListener = observerListener;
-        return self;
-    };
+/// map 对象转换
+- (id)mapValue {
+    if (self.observerMap != nil) {
+        return self.observerMap(self.value.value);
+    }
+    return self.value.value;
 }
 
 
+#pragma mark ----- textfield监听
 - (void)textChange:(id)notification {
     UITextField *textField = (UITextField *)self.view;
     if ([self.value isKindOfClass:[NSString class]]) {
@@ -105,13 +117,6 @@
         self.observerListener(self.value.value,textField.text);
         [self.value notify];
     }
-}
-
-- (id)mapValue {
-    if (self.observerMap != nil) {
-        return self.observerMap(self.value.value);
-    }
-    return self.value.value;
 }
 
 @end
