@@ -25,13 +25,15 @@
     self.age = Observable.create(@1);
     self.user = Observable.create([[User alloc] init]);
     
+    //绑定label
+    self.countLabel.observer().subscribe(self.name);
+    //绑定textfield
     self.textField
     .observer()
     .subscribe(self.user)
     .map(^(User *value){
         return value.name;
-    })
-    .then(^(UITextField * _Nonnull view, NSString *value) {
+    }).then(^(UITextField * _Nonnull view, id value) {
         NSString *v = value;
         if ([v isEqualToString:@"22222"]) {
             view.backgroundColor = [UIColor redColor];
@@ -57,9 +59,7 @@
 //        }
 //        view.text = v;
 //    });
-//    
-    
-    self.countLabel.observer().subscribe(self.name);
+//
 }
 
 - (void)changInfo {

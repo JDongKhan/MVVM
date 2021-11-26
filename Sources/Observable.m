@@ -60,6 +60,7 @@
     [self.observers removeObject:_willDeleteEntry];
 }
 
+/// 通知观察者们数据变化了
 - (void)notify {
     if (self.observers.count == 0) {
         return;
