@@ -23,7 +23,7 @@
 - (void)initInfo {
     self.name = Observable.create(@"哈哈哈哈");
     self.age = Observable.create(@1);
-    self.user = Observable.create([[User alloc] init]);
+    self.user = Observable.create([User name:@"first"]);
     
     //绑定label
     self.countLabel.observer().subscribe(self.name);

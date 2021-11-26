@@ -9,4 +9,10 @@
 
 @implementation User
 
++ (instancetype)name:(NSString *)name {
+    User *u = [[User alloc] init];
+    u.name = name;
+    return u;
+}
+
 @end
