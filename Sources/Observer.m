@@ -109,13 +109,16 @@
 
 
 #pragma mark ----- textfield监听
-- (void)textChange:(id)notification {
-    UITextField *textField = (UITextField *)self.view;
-    if ([self.value isKindOfClass:[NSString class]]) {
-        self.value.value = textField.text;
-    } else {
-        self.observerListener(self.value.value,textField.text);
-        [self.value notify];
+- (void)textChange:(NSNotification *)notification {
+    id target = notification.object;
+    if (target == self.view) {
+        UITextField *textField = (UITextField *)self.view;
+        if ([self.value isKindOfClass:[NSString class]]) {
+            self.value.value = textField.text;
+        } else {
+            self.observerListener(self.value.value,textField.text);
+            [self.value notify];
+        }
     }
 }
 
