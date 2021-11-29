@@ -35,6 +35,8 @@
 - (Observer * _Nonnull (^)(Observable * _Nonnull value))subscribe {
     return ^(Observable *value){
         self.value = value;
+        [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(renderUI) object:nil];
+        [self performSelector:@selector(renderUI) withObject:nil afterDelay:.05f];
         return self;
     };
 }
@@ -43,6 +45,8 @@
 - (Observer * _Nonnull (^)(ObserverMap _Nonnull))map {
     return ^(ObserverMap observerMap){
         self.observerMap = observerMap;
+        [[self class] cancelPreviousPerformRequestsWithTarget:self selector:@selector(renderUI) object:nil];
+        [self performSelector:@selector(renderUI) withObject:nil afterDelay:.05f];
         return self;
     };
 }
@@ -58,7 +62,6 @@
 #pragma mark ---- 私有方法
 - (void)setValue:(Observable *)value {
     _value = value;
-    [self renderUI];
     __weak Observer *observer = self;
     [value addObserver:^{
         if (observer == nil) {
@@ -87,6 +90,7 @@
 
 /// 渲染UI
 - (void)renderUI {
+    NSLog(@"renderUI-------");
     id obj = [self mapValue];
     if ([obj isKindOfClass:[NSString class]]) {
         if ([self.view isKindOfClass:[UILabel class]]) {
